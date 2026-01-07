@@ -1,0 +1,147 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Clientes</h1>
+
+    <div class="actions">
+      <input
+        class="search"
+        type="text"
+        placeholder="Buscar"
+        [value]="search"
+        (input)="search = $any($event.target).value; applyFilter()"
+      />
+      <button class="btn-primary" (click)="openCreate()">Nuevo</button>
+    </div>
+  </div>
+
+  @if (error) {
+  <div class="error">{{ error }}</div>
+  }
+
+  <div class="table">
+    <div class="row head">
+      <div>Nombres</div>
+      <div>Dirección</div>
+      <div>Teléfono</div>
+      <div>Contraseña</div>
+      <div>Estado</div>
+      <div>Acciones</div>
+    </div>
+
+    @if (filtered.length === 0) {
+    <div class="row empty">
+      <div class="muted">Sin datos</div>
+    </div>
+    } @else { @for (c of filtered; track c.id) {
+    <div class="row">
+      <div>{{ c.nombre }}</div>
+      <div class="truncate" title="{{ c.direccion }}">{{ c.direccion }}</div>
+      <div>{{ c.telefono }}</div>
+      <div>******</div>
+      <div>{{ c.estado ? 'True' : 'False' }}</div>
+      <div class="actions-cell">
+        <button class="btn-link" (click)="openEdit(c)">Editar</button>
+        <button class="btn-link danger" (click)="remove(c)">Eliminar</button>
+      </div>
+    </div>
+    } }
+  </div>
+</div>
+
+@if (isModalOpen) {
+<div class="backdrop" (click)="closeModal()"></div>
+
+<div class="modal" role="dialog" aria-modal="true">
+  <div class="modal-header">
+    <div class="modal-title">{{ isEdit ? 'Editar Cliente' : 'Nuevo Cliente' }}</div>
+    <button class="x" (click)="closeModal()">X</button>
+  </div>
+
+  <form
+    class="modal-body"
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="grid">
+      <label>
+        ClienteId
+        <input formControlName="clienteId" [readonly]="isEdit" />
+        @if (touchedInvalid('clienteId')) {
+        <small class="val">Requerido (5-30)</small>
+        }
+      </label>
+
+      <label>
+        Contraseña
+        <input type="password" formControlName="contrasena" [readonly]="isEdit" />
+        @if (!isEdit && touchedInvalid('contrasena')) {
+        <small class="val">Requerido (mín 8)</small>
+        }
+      </label>
+
+      <label>
+        Estado
+        <select formControlName="estado">
+          <option [ngValue]="true">Activo</option>
+          <option [ngValue]="false">Inactivo</option>
+        </select>
+      </label>
+
+      <label>
+        Nombre
+        <input formControlName="nombre" />
+        @if (touchedInvalid('nombre')) {
+        <small class="val">Requerido</small>
+        }
+      </label>
+
+      <label>
+        Género
+        <select formControlName="genero">
+          @for (g of generos; track g) {
+          <option [value]="g">{{ g }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Edad
+        <input type="number" formControlName="edad" />
+        @if (touchedInvalid('edad')) {
+        <small class="val">0 - 120</small>
+        }
+      </label>
+
+      <label>
+        Identificación
+        <input formControlName="identificacion" [readonly]="isEdit" />
+        @if (touchedInvalid('identificacion')) {
+        <small class="val">Requerido</small>
+        }
+      </label>
+
+      <label>
+        Dirección
+        <input formControlName="direccion" />
+        @if (touchedInvalid('direccion')) {
+        <small class="val">Requerido</small>
+        }
+      </label>
+
+      <label>
+        Teléfono
+        <input formControlName="telefono" />
+        @if (touchedInvalid('telefono')) {
+        <small class="val">Requerido</small>
+        }
+      </label>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn-secondary" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-primary">{{ isEdit ? 'Guardar' : 'Crear' }}</button>
+    </div>
+  </form>
+</div>
+}

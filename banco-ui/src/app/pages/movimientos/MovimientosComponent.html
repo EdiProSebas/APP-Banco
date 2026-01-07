@@ -1,0 +1,112 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Movimientos</h1>
+
+    <div class="actions">
+      <input
+        class="search"
+        type="text"
+        placeholder="Buscar (fecha / tipo / # cuenta)"
+        [value]="search"
+        (input)="search = ($any($event.target).value); applyFilter()"
+      />
+      <button class="btn-primary" (click)="openCreate()">Nuevo</button>
+    </div>
+  </div>
+
+  <div class="filters">
+    <div class="filter-item">
+      <span>CuentaId</span>
+      <input
+        type="number"
+        class="mini"
+        [value]="filtroCuentaId ?? ''"
+        (input)="setFiltroCuentaId($any($event.target).value)"
+        placeholder="Ej: 1"
+      />
+      <button class="btn-secondary" (click)="aplicarFiltroCuenta()">Aplicar</button>
+      <button class="btn-secondary" (click)="limpiarFiltroCuenta()">Limpiar</button>
+    </div>
+  </div>
+
+  @if (error) {
+    <div class="error">{{ error }}</div>
+  }
+
+  <div class="table">
+    <div class="row head">
+      <div>ID</div>
+      <div>Fecha</div>
+      <div># Cuenta</div>
+      <div>Tipo</div>
+      <div>Valor</div>
+      <div>Saldo</div>
+      <div>Acciones</div>
+    </div>
+
+    @if (filtered.length === 0) {
+      <div class="row empty">
+        <div class="muted">Sin datos</div>
+      </div>
+    } @else {
+      @for (m of filtered; track m.movimientoId) {
+        <div class="row">
+          <div>{{ m.movimientoId }}</div>
+          <div class="truncate" title="{{ m.fecha }}">{{ m.fecha }}</div>
+          <div>{{ m.numeroCuenta }}</div>
+          <div>{{ m.tipoMovimiento }}</div>
+          <div>{{ m.valor }}</div>
+          <div>{{ m.saldo }}</div>
+          <div class="actions-cell">
+            <button class="btn-link danger" (click)="remove(m)">Eliminar</button>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>
+
+@if (isModalOpen) {
+  <div class="backdrop" (click)="closeModal()"></div>
+
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Nuevo Movimiento</div>
+      <button class="x" (click)="closeModal()">X</button>
+    </div>
+
+    <form class="modal-body" [formGroup]="form" (ngSubmit)="save()" (click)="$event.stopPropagation()">
+      <div class="grid">
+        <label>
+          CuentaId
+          <input type="number" formControlName="cuentaId" />
+          @if (touchedInvalid('cuentaId')) {
+            <small class="val">Requerido (>= 1)</small>
+          }
+        </label>
+
+        <label>
+          Tipo
+          <select formControlName="tipoMovimiento">
+            @for (t of tipos; track t) {
+              <option [value]="t">{{ t }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Valor
+          <input type="number" formControlName="valor" />
+          @if (touchedInvalid('valor')) {
+            <small class="val">Debe ser > 0</small>
+          }
+        </label>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button type="submit" class="btn-primary">Crear</button>
+      </div>
+    </form>
+  </div>
+}

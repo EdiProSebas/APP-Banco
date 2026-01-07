@@ -1,0 +1,118 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Cuentas</h1>
+
+    <div class="actions">
+      <input
+        class="search"
+        type="text"
+        placeholder="Buscar (número, tipo, cliente)"
+        [value]="search"
+        (input)="search = $any($event.target).value; applyFilter()"
+      />
+      <button class="btn-primary" (click)="openCreate()">Nuevo</button>
+    </div>
+  </div>
+
+  @if (error) {
+  <div class="error">{{ error }}</div>
+  }
+
+  <div class="table">
+    <div class="row head">
+      <div>Numero Cuenta</div>
+      <div>Tipo</div>
+      <div>Saldo Inicial</div>
+      <div>Estado</div>
+      <div>Cliente</div>
+      <div>Acciones</div>
+    </div>
+
+    @if (filtered.length === 0) {
+    <div class="row empty">
+      <div class="muted">Sin datos</div>
+    </div>
+    } @else { @for (c of filtered; track c.cuentaId) {
+    <div class="row">
+      <div>{{ c.numeroCuenta }}</div>
+      <div>{{ c.tipoCuenta }}</div>
+      <div>{{ c.saldoInicial }}</div>
+      <div>{{ c.estado ? 'True' : 'False' }}</div>
+      <div>{{ clienteNombre(c) }}</div>
+      <div class="actions-cell">
+        <button class="btn-link" (click)="openEdit(c)">Editar</button>
+        <button class="btn-link danger" (click)="remove(c)">Eliminar</button>
+      </div>
+    </div>
+    } }
+  </div>
+</div>
+
+@if (isModalOpen) {
+<div class="backdrop" (click)="closeModal()"></div>
+
+<div class="modal" role="dialog" aria-modal="true">
+  <div class="modal-header">
+    <div class="modal-title">{{ isEdit ? 'Editar Cuenta' : 'Nueva Cuenta' }}</div>
+    <button class="x" (click)="closeModal()">X</button>
+  </div>
+
+  <form
+    class="modal-body"
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="grid">
+      <label>
+        Número de Cuenta
+        <input formControlName="numeroCuenta" />
+        @if (touchedInvalid('numeroCuenta')) {
+        <small class="val">Requerido (6-30)</small>
+        }
+      </label>
+
+      <label>
+        Tipo de Cuenta
+        <select formControlName="tipoCuenta">
+          @for (t of tiposCuenta; track t) {
+          <option [value]="t">{{ t }}</option>
+          }
+        </select>
+        @if (touchedInvalid('tipoCuenta')) {
+        <small class="val">Requerido</small>
+        }
+      </label>
+
+      <label>
+        Saldo Inicial
+        <input type="number" formControlName="saldoInicial" />
+        @if (touchedInvalid('saldoInicial')) {
+        <small class="val">Debe ser >= 0</small>
+        }
+      </label>
+
+      <label>
+        Estado
+        <select formControlName="estado">
+          <option [ngValue]="true">Activo</option>
+          <option [ngValue]="false">Inactivo</option>
+        </select>
+      </label>
+
+      <label>
+        ClientePk
+        <input type="number" formControlName="clientePk" />
+        @if (touchedInvalid('clientePk')) {
+        <small class="val">Requerido (>= 1)</small>
+        }
+      </label>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn-secondary" (click)="closeModal()">Cancelar</button>
+      <button type="submit" class="btn-primary">{{ isEdit ? 'Guardar' : 'Crear' }}</button>
+    </div>
+  </form>
+</div>
+}

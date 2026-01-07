@@ -1,0 +1,55 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Reportes</h1>
+  </div>
+
+  <form class="toolbar" [formGroup]="form" (ngSubmit)="consultar()">
+    <label>
+      CuentaId
+      <input type="number" formControlName="cuentaId" placeholder="Ej: 1" />
+      @if (touchedInvalid()) {
+        <small class="val">Requerido (>= 1)</small>
+      }
+    </label>
+
+    <button type="submit" class="btn-primary">Consultar</button>
+    <button type="button" class="btn-secondary" (click)="descargarPdf()">Descargar PDF</button>
+  </form>
+
+  @if (error) {
+    <div class="error">{{ error }}</div>
+  }
+
+  @if (reporte) {
+    <div class="card">
+      <div class="meta">
+        <div><b>Cuenta:</b> {{ reporte.numeroCuenta }} (ID {{ reporte.cuentaId }})</div>
+        <div><b>Saldo final:</b> {{ reporte.saldoFinal }}</div>
+      </div>
+
+      <div class="table">
+        <div class="row head">
+          <div>Fecha</div>
+          <div>Tipo</div>
+          <div>Valor</div>
+          <div>Saldo</div>
+        </div>
+
+        @if (reporte.movimientos.length === 0) {
+          <div class="row empty">
+            <div class="muted">Sin movimientos</div>
+          </div>
+        } @else {
+          @for (m of reporte.movimientos; track $index) {
+            <div class="row">
+              <div class="truncate" title="{{ m.fecha }}">{{ m.fecha }}</div>
+              <div>{{ m.tipoMovimiento }}</div>
+              <div>{{ m.valor }}</div>
+              <div>{{ m.saldo }}</div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+</div>

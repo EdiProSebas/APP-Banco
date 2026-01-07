@@ -1,0 +1,20 @@
+<div class="app">
+  <header class="topbar">
+    <div class="brand">BANCO</div>
+  </header>
+
+  <div class="main">
+    <aside class="sidebar">
+      <nav class="menu">
+        <a routerLink="/clientes" routerLinkActive="active">Clientes</a>
+        <a routerLink="/cuentas" routerLinkActive="active">Cuentas</a>
+        <a routerLink="/movimientos" routerLinkActive="active">Movimientos</a>
+        <a routerLink="/reportes" routerLinkActive="active">Reportes</a>
+      </nav>
+    </aside>
+
+    <section class="content">
+      <router-outlet></router-outlet>
+    </section>
+  </div>
+</div>
