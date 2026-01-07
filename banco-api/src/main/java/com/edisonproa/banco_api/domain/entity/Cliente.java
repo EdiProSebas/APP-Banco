@@ -36,7 +36,6 @@ public class Cliente extends Persona {
     @Column(nullable = false)
     private Boolean estado;
 
-    // Se implementará cuando creemos Cuenta.java
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Cuenta> cuentas = new ArrayList<>();
 }
