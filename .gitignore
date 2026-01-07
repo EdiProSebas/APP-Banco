@@ -1,0 +1,25 @@
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Backend (Maven/Java)
+banco-api/target/
+banco-api/.mvn/wrapper/maven-wrapper.jar
+*.log
+
+# Frontend (Angular/Node)
+banco-ui/node_modules/
+banco-ui/dist/
+banco-ui/.angular/
+banco-ui/.cache/
+banco-ui/coverage/
+
+# Env files / secrets
+*.env
+**/application-local.properties
+**/application-local.yml
+
+# Docker volumes (if any local)
+**/dbdata/

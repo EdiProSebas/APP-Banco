@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "705bb164-c364-4ae5-852a-f16fceae4af0",
+		"name": "Banco API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33789886"
+	},
+	"item": [
+		{
+			"name": "Listar Clientes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/clientes",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"clientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Cliente",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Carlos Test\",\n  \"genero\": \"MASCULINO\",\n  \"edad\": 40,\n  \"identificacion\": \"999888777\",\n  \"direccion\": \"Calle Falsa 123\",\n  \"telefono\": \"090909090\",\n  \"estado\": true,\n  \"contrasena\": \"Secret1\",\n  \"clienteId\": \"CLI-TEST\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/clientes",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"clientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Cuentas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/cuentas",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"cuentas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Cuenta",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"numeroCuenta\": \"00012345\",\n  \"tipoCuenta\": \"AHORROS\",\n  \"saldoInicial\": 1000,\n  \"estado\": true,\n  \"clientePk\": 1\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/cuentas",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"cuentas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Movimientos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/movimientos",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"movimientos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Movimiento",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"cuentaId\": 1,\n  \"tipoMovimiento\": \"DEBITO\",\n  \"valor\": 200\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/movimientos",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"movimientos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Reporte",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reportes/cuentas/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reportes",
+						"cuentas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Descargar Reporte PDF",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reportes/cuentas/1/pdf",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reportes",
+						"cuentas",
+						"1",
+						"pdf"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		}
+	]
+}

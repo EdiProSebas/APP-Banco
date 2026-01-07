@@ -1,0 +1,39 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: banco-mysql
+    environment:
+      MYSQL_DATABASE: banco_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./BaseDatos.sql:/docker-entrypoint-initdb.d/BaseDatos.sql:ro
+
+  api:
+    build:
+      context: ./banco-api
+    container_name: banco-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/banco_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  ui:
+    build:
+      context: ./banco-ui
+    container_name: banco-ui
+    ports:
+      - "4200:80"
+    depends_on:
+      - api
+
+volumes:
+  dbdata:
