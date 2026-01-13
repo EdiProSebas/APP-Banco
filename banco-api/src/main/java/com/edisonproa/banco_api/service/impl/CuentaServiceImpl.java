@@ -93,9 +93,6 @@ public class CuentaServiceImpl implements CuentaService {
             // Debe venir "AHORROS" o "CORRIENTE"
             cuenta.setTipoCuenta(TipoCuenta.valueOf((String) patch.get("tipoCuenta")));
         }
-
-        // Nota: saldoInicial por PATCH lo permito solo si quieres; puedes bloquearlo
-        // por negocio.
         if (patch.containsKey("saldoInicial")) {
             Object v = patch.get("saldoInicial");
             // si viene como number, Spring lo puede mapear a Integer/Double. Convertimos a
