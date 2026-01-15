@@ -95,8 +95,7 @@ public class CuentaServiceImpl implements CuentaService {
         }
         if (patch.containsKey("saldoInicial")) {
             Object v = patch.get("saldoInicial");
-            // si viene como number, Spring lo puede mapear a Integer/Double. Convertimos a
-            // String:
+            // si viene como number, Spring lo puede mapear a Integer/Double. Convierte a String:
             cuenta.setSaldoInicial(Double.valueOf(String.valueOf(v)));
         }
 
